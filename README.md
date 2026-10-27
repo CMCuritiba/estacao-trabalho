@@ -1,5 +1,14 @@
 # Repositório para os scripts da imagem Mint/Cinnamon
 
+- [Repositório para os scripts da imagem Mint/Cinnamon](#repositório-para-os-scripts-da-imagem-mintcinnamon)
+  - [Diretrizes](#diretrizes)
+  - [Requisitos](#requisitos)
+  - [Instalação/configuração para produção](#instalaçãoconfiguração-para-produção)
+  - [Trabalhando no código](#trabalhando-no-código)
+    - [Configurando seu ambiente de trabalho](#configurando-seu-ambiente-de-trabalho)
+    - [Testando](#testando)
+  - [Como contribuir](#como-contribuir)
+
 ## Diretrizes
 
 1. Devem ser criadas _tasks_ para todas as operações possíveis.
@@ -37,18 +46,18 @@ Configure o **seu** computador:
 
 1. <a name="ansible-install"></a>Para começar, instale o Ansible de acordo com a
    [documentação oficial](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-   (sugerimos [fazer a instalação usando o pip](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip)):
+   (recomendamos o [pipx](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx), conforme orientação oficial para ambientes gerenciados como Ubuntu 24.04 / Linux Mint 22):
 
    ```shell
-   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-   python3 get-pip.py --user
-   python3 -m pip install --user ansible
+   sudo apt install -y pipx
+   pipx ensurepath
+   pipx install --include-deps ansible
    ```
 
    Instale as dependências da _role_:
 
    ```shell
-   python3 -m pip install --user passlib
+   pipx inject ansible passlib
    ```
 
    Para acessar o computador remoto, será necessário o `sshpass`:
@@ -114,7 +123,7 @@ Configure o **seu** computador:
    ansible et2 -m ping -u suporte -k -i inventory/inventory.yml
    ```
 
-6. Para aplicar o _playbook_, você utilizará o usuário/senha utilizados na
+6. Para aplicar o _playbook_, você utilizará o usuário/senha informados na
    instalação do Mint no novo computador ([definido aqui](#user_suporte)).
    Aplique o _playbook_ com o comando:
 
@@ -136,9 +145,13 @@ Reinicie a nova estação de trabalho e faça login com seu usuário do domínio
 
 ## Trabalhando no código
 
+Nesta seção você encontrará informações essenciais para configurar o ambiente de desenvolvimento **no seu computador pessoal**, entender a estrutura do código e contribuir de forma eficiente. Seja você um desenvolvedor experiente ou um colaborador iniciante, esta seção foi criada para guiá-lo no processo de trabalho com o código-fonte do projeto, diretamente na sua máquina.
+
+Antes de começar, certifique-se de que seu computador atende aos requisitos necessários e de que você possui as ferramentas adequadas instaladas. Vamos cobrir desde a configuração inicial até as práticas recomendadas para garantir uma experiência de desenvolvimento fluida e produtiva. Siga as instruções abaixo para preparar seu ambiente local e começar a contribuir!
+
 ### Configurando seu ambiente de trabalho
 
-1. Clone este repositório para sua máquina
+1. Clone este repositório para a sua máquina
 
    ```shell
    mkdir ~/workspace
@@ -148,20 +161,15 @@ Reinicie a nova estação de trabalho e faça login com seu usuário do domínio
 
 2. Instale o Ansible, Molecule e Vagrant:
 
-   1. Instale o [Ansible](#ansible-install) o `sshpass`;
-   2. <a name="vagrant-install"></a>Instale o Vagrant de acordo com a
-      [documentação oficial](https://developer.hashicorp.com/vagrant/install?product_intent=vagrant#linux).
+   1. Instale o [Ansible](#ansible-install);
+      1. Para aplicar o ansible nas máquinas de destino, você poderá precisar do
+         `sshpass`. Instale-o com:
 
-      **Atenção**: se o seu sistema operacional for o Linux Mint, durante a
-      instalação certifique-se de utilizar a versão base do ubuntu no
-      _source list_ do vagrant a ser criado. O comando `lsb_release -cs` retorna
-      a versão do Mint e não irá funcionar para a instalação do vagrant. A
-      versão base do seu Mint pode ser verificada nos arquivos:
+         ```shell
+         sudo apt install sshpass
+         ```
 
-      - `/etc/apt/sources.list.d/official-package-repositories.list`
-      - `/etc/upstream-release/lsb-release`
-
-   3. Instale o Molecule e seus plugins, de acordo com a [documentação oficial](https://ansible.readthedocs.io/projects/molecule/installation/):
+   2. Instale o Molecule e seus plugins, de acordo com a [documentação oficial](https://ansible.readthedocs.io/projects/molecule/installation/):
 
       ```shell
       # Antes de instalar, crie e ative um virtualenv
@@ -177,6 +185,18 @@ Reinicie a nova estação de trabalho e faça login com seu usuário do domínio
       (molecule) $ pip install passlib
       ```
 
+   3. <a name="vagrant-install"></a>Instale o Vagrant de acordo com a
+      [documentação oficial](https://developer.hashicorp.com/vagrant/install?product_intent=vagrant#linux).
+
+      **Atenção**: se o seu sistema operacional for o Linux Mint, durante a
+      instalação certifique-se de utilizar a versão base do ubuntu no
+      _source list_ do vagrant a ser criado. O comando `lsb_release -cs` retorna
+      a versão do Mint e não irá funcionar para a instalação do vagrant. A
+      versão base do seu Mint pode ser verificada nos arquivos:
+
+      - `/etc/apt/sources.list.d/official-package-repositories.list`
+      - `/etc/upstream-release/lsb-release`
+
 3. Opcionalmente, ative o [commitlint](https://github.com/conventional-changelog/commitlint) e
    o [commitzen](https://github.com/commitizen/cz-cli) no repositório:
 
@@ -188,7 +208,9 @@ Reinicie a nova estação de trabalho e faça login com seu usuário do domínio
       npm install
       ```
 
-   3. Esta configuração não é obrigatória, mas **fortemente** recomendada;
+   3. Esta configuração não é obrigatória, mas se você não utilizar
+      [_Conventional Commits_](https://www.conventionalcommits.org/pt-br/),
+      iremos julgar os seus commits :stuck_out_tongue_winking_eye:
    4. O commitzen não integra com o VS Code, para uso no editor considere
       [instalar uma extensão](https://github.com/commitizen/cz-cli#adapters).
 
