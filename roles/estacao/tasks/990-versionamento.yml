@@ -4,5 +4,5 @@
 - name: "Mantém versionamento"
   ansible.builtin.copy:
     dest: "{{ estacao_cmc_dir }}/version"
-    content: "ET-6.2.0"
+    content: "{{ estacao_versao }}"
     mode: "0644"
