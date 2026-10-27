@@ -66,12 +66,11 @@ Configure o **seu** computador:
    sudo apt install -y sshpass
    ```
 
-2. Baixe o código do [repositório](https://github.com/CMCuritiba/Estacao-Trabalho-CMC)
+2. Baixe o código do [repositório](https://github.com/CMCuritiba/estacao-trabalho)
    via `git` ou baixando o zip.
 3. Utilize o arquivo [`all.yml.example`](./inventory/group_vars/all.yml.example)
    como exemplo para criar um novo arquivo de configuração `inventory/group_vars/all.yml`,
    de acordo com o necessário. As variáveis são:
-
    - `estacao_suporte_user`: usuário local para suporte
    - `estacao_suporte_pass`: senha do usuário suporte
    - `estacao_root_pass`: senha do usuário root
@@ -79,6 +78,24 @@ Configure o **seu** computador:
    - `estacao_dtic_group`: grupo do AD que irá gerenciar as estações
    - `estacao_dtic_network`: CIDR da rede que irá gerenciar as estações
    - `estacao_ad_ip_addresses`: lista de endereços IP do servidor AD
+   - `estacao_ad_kdc`: lista de hosts controladores de domínio (KDC)
+
+     A lista deve ser obtida em um PC já pertencente ao domínio, rode o comando
+     a seguir e veja a lista sob _Discovered AD Domain Controller servers_:
+
+     ```shell
+     sudo sssctl domain-status example.com
+     ```
+
+     Para utilizar IPv4 nos parâmetros `kdc` e `admin_server`, certifique-se
+     que de configurar `[libdefaults]` no arquivo `/etc/krb5.conf` com:
+
+     ```ini
+     [libdefaults]
+         rdns = false
+         dns_canonicalize_hostname = false
+     ```
+
    - `estacao_ad_domain`: dominio do AD
    - `estacao_ad_join_user`: nome do usuário de join (apenas para permitir a
      configuração, não ficará _hard-coded_ na ET)
@@ -87,9 +104,9 @@ Configure o **seu** computador:
    - `estacao_s3fs_bucket_name`: nome do aws s3 bucket para o mount
    - `estacao_s3fs_access_key`: access key para acesso ao bucket de mount
    - `estacao_s3fs_secret_access_key`: secret access key para acesso ao bucket de mount
-   - `estacao_s3fs_endpoint`: **OPCIONAL**, região do bucket
-   - `estacao_mnt_suporte`: **OPCIONAL**, ponto de montagem local
-   - `estacao_ad_fallback_ips`: **OPCIONAL**, lista de IPs para fallback de DNS
+   - `estacao_s3fs_endpoint`: região do bucket
+   - `estacao_mnt_suporte`: ponto de montagem local
+   - `estacao_ad_fallback_ips`: lista de IPs para fallback de DNS
 
 4. Adicione o nome ou o endereço IP do computador onde será configurada a
    estação no [inventário](./inventory/inventory.yml). Você poderá aplicar a
@@ -156,11 +173,10 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
    ```shell
    mkdir ~/workspace
    cd ~/workspace/
-   git clone git@github.com:CMCuritiba/Estacao-Trabalho-CMC.git
+   git clone git@github.com:CMCuritiba/estacao-trabalho.git
    ```
 
 2. Instale o Ansible, Molecule e Vagrant:
-
    1. Instale o [Ansible](#ansible-install);
       1. Para aplicar o ansible nas máquinas de destino, você poderá precisar do
          `sshpass`. Instale-o com:
@@ -193,18 +209,16 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
       _source list_ do vagrant a ser criado. O comando `lsb_release -cs` retorna
       a versão do Mint e não irá funcionar para a instalação do vagrant. A
       versão base do seu Mint pode ser verificada nos arquivos:
-
       - `/etc/apt/sources.list.d/official-package-repositories.list`
       - `/etc/upstream-release/lsb-release`
 
 3. Opcionalmente, ative o [commitlint](https://github.com/conventional-changelog/commitlint) e
    o [commitzen](https://github.com/commitizen/cz-cli) no repositório:
-
    1. Instale [`npm e node`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm);
    2. Na pasta do repositório, rode:
 
       ```shell
-      cd ~/workspace/Estacao-Trabalho-CMC/
+      cd ~/workspace/estacao-trabalho/
       npm install
       ```
 
@@ -233,7 +247,7 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
 3. Teste o _converge_:
 
    ```shell
-   cd ~/workspace/Estacao-Trabalho-CMC/roles/estacao/
+   cd ~/workspace/estacao-trabalho/roles/estacao/
    $ source ~/workspace/molecule/bin/activate
    (molecule) $ molecule converge -- --diff
    ```
@@ -277,9 +291,9 @@ Caso seja necessário realizar os testes manualmente sem utilizar o Molecule, é
    execute o código:
 
    ```shell
-   wget https://github.com/CMCuritiba/Estacao-Trabalho-CMC/archive/refs/heads/develop.zip
+   wget https://github.com/CMCuritiba/estacao-trabalho/archive/refs/heads/develop.zip
    unzip develop.zip
-   cd Estacao-Trabalho-CMC-develop/
+   cd estacao-trabalho-develop/
    sudo apt update
    sudo apt install pip -y
    pip install --user ansible

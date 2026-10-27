@@ -85,4 +85,4 @@ estacao_firefox_addons:
   - name: "pt-BR@dictionaries.addons.mozilla.org"
     url: "https://addons.mozilla.org/firefox/downloads/file/4223181/corretor-123.2024.16.151.xpi"
 
-estacao_versao: "ET-7.0.0" # type: string ET-semver
+estacao_versao: "ET-6.5.2" # type: string ET-semver
