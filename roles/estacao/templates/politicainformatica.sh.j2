@@ -1,5 +1,12 @@
 #!/bin/bash
 
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
+
 zenity --text-info --title="Política de informatica" --checkbox="Eu li e aceito as condições estipuladas acima" --filename="{{ estacao_politica }}" --height=600 --width=800 2>/dev/null
 if [ $? != 0 ]; then
         touch "$HOME/.forcelogout"

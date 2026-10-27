@@ -1,6 +1,12 @@
 #!/bin/bash
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
 
-CMCDOMAIN="{{estacao_ad_domain | lower}}"
+CMCDOMAIN="{{ estacao_ad_domain | lower }}"
 INTERFACE="$(nmcli device status | grep -E "conectado|connected" | head -n1 | awk '{print $1}')"
 IPATUAL=$(ip addr list "$INTERFACE" | grep -m1 -w "inet" | awk '{print $2}' | cut -d '/' -f 1)
 
@@ -26,4 +32,3 @@ if [ -n "$IPATUAL" ] && [ -n "$CMCDOMAIN" ]; then
         fi
     fi
 fi
-

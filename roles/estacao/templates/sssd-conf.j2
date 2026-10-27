@@ -1,4 +1,19 @@
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
+
 # SSSD CMC
+#
+# ATENÇÃO: este arquivo não permite comentários inline
+
+# Vide:
+# https://manpages.ubuntu.com/manpages/noble/man5/sssd.conf.5.html
+# https://manpages.ubuntu.com/manpages/noble/man5/sssd-ad.5.html
+# https://manpages.ubuntu.com/manpages/noble/man5/sssd-ldap.5.html
+# https://manpages.ubuntu.com/manpages/noble/man5/sssd-krb5.5.html
 
 [sssd]
 domains = {{ estacao_ad_domain | lower }}

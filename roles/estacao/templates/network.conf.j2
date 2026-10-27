@@ -1,4 +1,11 @@
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
+
 [Unit]
- Before=systemd-user-sessions.service nss-user-lookup.target
- After=network-online.target
- Wants=nss-user-lookup.target
+Before=systemd-user-sessions.service nss-user-lookup.target
+After=network-online.target
+Wants=nss-user-lookup.target
