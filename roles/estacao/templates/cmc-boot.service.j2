@@ -1,3 +1,10 @@
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
+
 [Unit]
 Wants=network-online.target
 After=network-online.target
@@ -5,6 +12,7 @@ After=network-online.target
 [Service]
 Restart=on-failure
 RestartSec=60
+EnvironmentFile={{ estacao_ad_join_env }}
 ExecStart=/bin/bash {{ estacao_bootsh }}
 
 [Install]

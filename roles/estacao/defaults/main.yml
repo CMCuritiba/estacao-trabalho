@@ -7,6 +7,9 @@ estacao_dtic_network: "0.0.0.0/24" # type: string CIDR
 estacao_ad_ip_addresses: # type: list of IPs
   - 0.0.0.0
   - 1.1.1.1
+estacao_ad_kdc: # type: list of string FQDN
+  - kdc1.example.com
+  - kdc2.example.com
 estacao_ad_domain: example.com # type: string FQDN
 estacao_ad_join_user: administrator # type: string username
 estacao_ad_join_pass: password # type: string password
@@ -81,3 +84,5 @@ estacao_bookmarks:
 estacao_firefox_addons:
   - name: "pt-BR@dictionaries.addons.mozilla.org"
     url: "https://addons.mozilla.org/firefox/downloads/file/4223181/corretor-123.2024.16.151.xpi"
+
+estacao_versao: "ET-6.5.2" # type: string ET-semver

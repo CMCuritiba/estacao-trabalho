@@ -1,0 +1,32 @@
+################################################################################
+# Arquivo gerado pelo Ansible para {{ estacao_versao }}
+# PELAMOR DEDEUS, NÃO EDITE ESSE ARQUIVO MANUALMENTE
+#
+# Se você precisa alterar este arquivo, peça para o time de arquitetura fazê-lo.
+################################################################################
+
+# Man: https://manpages.ubuntu.com/manpages/noble/man5/krb5.conf.5.html
+
+[libdefaults]
+	default_realm = {{ estacao_ad_domain | upper }}
+	rdns = false
+	dns_lookup_realm = false
+	dns_lookup_kdc = false
+	ticket_lifetime = 24h
+	renew_lifetime = 7d
+	kdc_timesync = 1
+	ccache_type = 4
+	forwardable = true
+
+[realms]
+	{{ estacao_ad_domain | upper }} = {
+{% for host in estacao_ad_kdc %}
+		kdc = {{ host | lower}}
+{% endfor %}
+		admin_server = {{ estacao_ad_kdc | first | lower }}
+		default_domain = {{ estacao_ad_domain | lower }}
+	}
+
+[domain_realm]
+	.{{ estacao_ad_domain | lower }} = {{ estacao_ad_domain | upper }}
+	{{ estacao_ad_domain | lower }} = {{ estacao_ad_domain | upper }}
