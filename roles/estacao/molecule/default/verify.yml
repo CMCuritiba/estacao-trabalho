@@ -352,7 +352,7 @@
       block:
         - name: Check on-login script
           ansible.builtin.stat:
-            path: /opt/cmc/on-login.sh
+            path: /usr/local/cmc/scripts/on-login.sh
           register: estacao_login
 
         - name: Verify on-login script exists
@@ -375,12 +375,12 @@
             fail_msg: "Version file does not exist"
             success_msg: "Version file exists"
 
-    # Categoria: Arquivos Modificados (995-arquivos-modificados.yml)
+    # Categoria: Arquivos Modificados (999-arquivos-modificados.yml)
     - name: "Test 073: Verify modified files directory exists"
       block:
         - name: Check modified files directory
           ansible.builtin.stat:
-            path: /opt/cmc/modificados/
+            path: /usr/local/cmc/modificados
           register: estacao_modified
 
         - name: Verify modified files directory exists
