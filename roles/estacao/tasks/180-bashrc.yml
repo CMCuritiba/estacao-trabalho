@@ -5,7 +5,7 @@
     regexp: "^alias l[al]?"
     state: absent
 
-- name: "Configura /root/.bash_aliases"
+- name: "Configura bash aliases"
   ansible.builtin.copy:
     dest: "{{ item }}"
     src: "bash_aliases"
