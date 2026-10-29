@@ -1,24 +1,27 @@
 # Caderno de Testes - Estação de Trabalho CMC
 
-Este documento contém todos os testes necessários para validar a configuração correta da estação de trabalho CMC.
+Este documento contém todos os testes necessários para validar a configuração
+correta da estação de trabalho CMC.
 
 ## Como usar este caderno
 
 1. Execute cada teste na ordem apresentada
 2. Marque como ✅ os testes que passaram
 3. Marque como ❌ os testes que falharam e investigue o problema
-4. Para testes automáticos, use o comando `molecule verify` na pasta `roles/estacao/`
+4. Para testes automáticos, use o comando `molecule verify` na pasta
+   `roles/estacao/`
 
 ## Testes Automatizados com Molecule
 
-Para facilitar a validação, alguns testes podem ser executados automaticamente usando o Molecule:
+Para facilitar a validação, alguns testes podem ser executados automaticamente
+usando o Molecule:
 
 ```bash
 cd roles/estacao/
 molecule verify
 ```
 
-### Testes automatizados disponíveis:
+### Testes automatizados disponíveis
 
 - **001-002**: Verificação de usuário suporte e grupos
 - **004**: Verificação de programas removidos
@@ -42,7 +45,11 @@ molecule verify
 - **072**: Verificação de arquivo de versão
 - **073**: Verificação de diretório de arquivos modificados
 
-> **Nota**: Os testes automatizados cobrem validações que podem ser verificadas programaticamente. Testes que requerem interação do usuário, verificação visual ou testes de funcionalidade devem ser executados manualmente seguindo as instruções abaixo.
+> [!NOTE]
+> Os testes automatizados cobrem validações que podem ser verificadas
+> programaticamente. Testes que requerem interação do usuário, verificação
+> visual ou testes de funcionalidade devem ser executados manualmente seguindo
+> as instruções abaixo.
 
 ## Testes Manuais
 
