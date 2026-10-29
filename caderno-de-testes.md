@@ -57,13 +57,13 @@ molecule verify
 ### Categoria: Remoção de Programas (020-remover-programas.yml)
 
 | ID  | Teste               | Como testar                                                                                                                                                                                                                                               |
-|-----|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 021 | Programas removidos | Verificar se programas desnecessários foram removidos<br>Comando: `dpkg -l \| grep -E "(hexchat\|thunderbird\|hypnotix\|drawing\|celluloid\|pix\|webapp-manager\|warpinator\|sticky\|simple-scan\|transmission)"` <br> Não deve retornar nenhum resultado |
 
 ### Categoria: Instalação de Programas (030-instala-programas.yml)
 
 | ID  | Teste                           | Como testar                                                                                                                                                                                                                                                                   |
-|-----|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 031 | Repositórios brasileiros        | Verificar se repositórios estão configurados para Brasil <br> Comando: `grep "br.archive.ubuntu.com" /etc/apt/sources.list.d/official-package-repositories.list` <br> Comando: `grep "mint-packages.c3sl.ufpr.br" /etc/apt/sources.list.d/official-package-repositories.list` |
 | 032 | Programas essenciais instalados | Verificar instalação de programas essenciais <br> Comando: `dpkg -l \| grep -E "(curl\|vim\|git\|htop\|tree\|unzip\|wget\|ssh)"` <br> Todos devem estar instalados.                                                                                                           |
 
@@ -98,8 +98,8 @@ molecule verify
 
 ### Categoria: Política Informática (080-politica-informatica.yml)
 
-| ID  | Teste                        | Como testar                                                                                                                                             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ID  | Teste                        | Como testar                                                                                                 |
+| --- | ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | 081 | Prompt de aceite da política | Faça um novo login na Estação de Trabalho, você deve receber uma tela com a política para leitura e aceite. |
 
 ### Categoria: Desabilitar TTY (090-desabilita-tty.yml)
@@ -124,16 +124,16 @@ molecule verify
 ### Categoria: DNS (120-configura-dns.yml)
 
 | ID  | Teste                     | Como testar                                                                                                                                               |
-|-----|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 121 | Configuração DNS          | Verificar configuração do `systemd-resolved` <br> Comando: `resolvectl status` <br> Deve conter DNS e domínio configurados.                               |
 | 122 | Resolução DNS funcionando | Testar resolução de nomes do domínio <br> Comandos: <br> `resolvectl query pc-daf-1` <br> `resolvectl query google.com` <br> Devem resolver corretamente. |
 
 ### Categoria: Script Boot (130-script-boot.yml)
 
-| ID  | Teste              | Como testar                                                                                                                       |
-| --- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| 131 | Script boot criado | Verificar se script existe<br>Comando: `ls -la /usr/local/cmc/scripts/cmc-boot.sh` <br> Script deve existir e ser executável.     |
-| 132 | Serviço boot ativo | Verificar se serviço está ativo<br>Comando: `systemctl status cmc-boot.service` <br> Deve estar ativo e habilitado                |
+| ID  | Teste              | Como testar                                                                                                                   |
+| --- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| 131 | Script boot criado | Verificar se script existe<br>Comando: `ls -la /usr/local/cmc/scripts/cmc-boot.sh` <br> Script deve existir e ser executável. |
+| 132 | Serviço boot ativo | Verificar se serviço está ativo<br>Comando: `systemctl status cmc-boot.service` <br> Deve estar ativo e habilitado            |
 
 ### Categoria: Integração AD (140-integra-ad.yml)
 
@@ -176,12 +176,12 @@ molecule verify
 
 ### Categoria: S3FS Mount (190-s3fs-mount.yml)
 
-| ID  | Teste              | Como testar                                                                                                                 |
-| --- | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| 191 | S3FS instalado     | Verificar se s3fs está instalado<br>Comando: `which s3fs`<br>Deve retornar caminho do executável                            |
-| 192 | Mount point criado | Verificar se ponto de montagem existe<br>Comando: `sudo ls /mnt/suporte/` <br>Diretório deve existir                        |
-| 193 | Configuração fstab | Verificar entrada no fstab<br>Comando: `grep s3fs /etc/fstab`<br>Deve conter configuração de montagem                       |
-| 194 | Pasta montada      | Verificar se o `/mnt/suporte` está montado corretamente: <br> `mount | grep s3fs` <br>Deve conter configuração de montagem. |
+| ID  | Teste              | Como testar                                                                                                                  |
+| --- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| 191 | S3FS instalado     | Verificar se s3fs está instalado<br>Comando: `which s3fs`<br>Deve retornar caminho do executável                             |
+| 192 | Mount point criado | Verificar se ponto de montagem existe<br>Comando: `sudo ls /mnt/suporte/` <br>Diretório deve existir                         |
+| 193 | Configuração fstab | Verificar entrada no fstab<br>Comando: `grep s3fs /etc/fstab`<br>Deve conter configuração de montagem                        |
+| 194 | Pasta montada      | Verificar se o `/mnt/suporte` está montado corretamente: <br> `mount \| grep s3fs` <br>Deve conter configuração de montagem. |
 
 ### Categoria: Script Rede (200-script-rede.yml)
 
@@ -199,17 +199,17 @@ molecule verify
 
 ### Categoria: VNC (220-vnc.yml)
 
-| ID  | Teste            | Como testar                                                                                                                                                                                                                                                                 |
-| --- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 221 | VNC instalado    | Verificar se VNC está instalado<br>Comando: `ps aux | grep vino-server` <br>Deve estar rodando                                                                                                                                                                              |
+| ID  | Teste                 | Como testar                                                                                                                                                                                                                                                            |
+| --- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 221 | VNC instalado         | Verificar se VNC está instalado<br>Comando: `ps aux \| grep vino-server` <br>Deve estar rodando                                                                                                                                                                        |
 | 222 | Conexão VNC funcional | Testar conexão VNC remota: <br> 1. Na ET 1, faça login <br> 2. Em outra estação de trabalho, tente se conectar: `vinagre nome-da-et1` <br> 3. O usuário na ET 1 deve receber um pedido de conexão. <br> 4. Após aprovação, deve ser possível controlar a tela da ET 1. |
 
 ### Categoria: Menu Items (230-menu-items.yml)
 
-| ID  | Teste                    | Como testar                                                                                                                                          |
-| --- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 231 | Itens menu desabilitados | Verificar se itens desnecessários estão ocultos no menu<br>Abrir menu principal e verificar quais aplicativos estão visíveis                         |
-| 232 | Aplicações desabilitadas | Verificar se as aplicações não aparece no Menu Iniciar: `mintupdate` `mintreport` `lightdm-settings` `mintwelcome`                                   |
+| ID  | Teste                    | Como testar                                                                                                                  |
+| --- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| 231 | Itens menu desabilitados | Verificar se itens desnecessários estão ocultos no menu<br>Abrir menu principal e verificar quais aplicativos estão visíveis |
+| 232 | Aplicações desabilitadas | Verificar se as aplicações não aparece no Menu Iniciar: `mintupdate` `mintreport` `lightdm-settings` `mintwelcome`           |
 
 ### Categoria: Login Gráfico (240-login-grafico.yml)
 
@@ -245,24 +245,24 @@ molecule verify
 ### Categoria: Bloqueio Cinnamon (270-bloqueio-cinnamon.yml)
 
 | ID  | Teste                            | Como testar                                                                                                                                             |
-| --- | --------------------             | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 271 | Programas bloqueados             | Tentar executar programas restritos como usuário comum:<br> `gnome-terminal` `mintupdate` `mintreport` `cinnamon-menu-editor` `cinnamon-desktop-editor` |
 | 272 | Configurações bloqueadas         | Tentar abrir configurações do sistema<br>Deve estar restrito para usuários normais                                                                      |
 | 273 | Programas liberados para Suporte | Tentar executar programas restritos como usuário da DTIC:<br> `gnome-terminal` `cinnamon-desktop-editor`                                                |
 
 ### Categoria: On Login (280-on-login.yml)
 
-| ID  | Teste                     | Como testar                                                                                            |
-| --- | ------------------------- | ------------------------------------------------------------------------------------------------------ |
-| 282 | Script on-login criado    | Verificar se script existe<br>Comando: `ls -lh /usr/local/cmc/scripts/on-login.sh`<br>Script deve existir            |
-| 283 | Ícones desktop protegidos | Fazer login e verificar ícones<br>Tentar remover ícones do desktop<br>Deve estar protegido (chattr +i) |
+| ID  | Teste                     | Como testar                                                                                               |
+| --- | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 282 | Script on-login criado    | Verificar se script existe<br>Comando: `ls -lh /usr/local/cmc/scripts/on-login.sh`<br>Script deve existir |
+| 283 | Ícones desktop protegidos | Fazer login e verificar ícones<br>Tentar remover ícones do desktop<br>Deve estar protegido (chattr +i)    |
 
 ### Categoria: Logs (290-configura-logs.yml)
 
-| ID  | Teste                | Como testar                                                                                                            |
-| --- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 292 | Configuração rsyslog | Verificar configuração de logs<br>Comando: `cat /etc/rsyslog.conf`<br>Verificar se tem configurações personalizadas    |
-| 293 | Logs funcionando     | Verificar se logs estão sendo gerados<br>Comando: `sudo less /var/log/syslog` <br>Deve mostrar atividade do sistema    |
+| ID  | Teste                | Como testar                                                                                                         |
+| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 292 | Configuração rsyslog | Verificar configuração de logs<br>Comando: `cat /etc/rsyslog.conf`<br>Verificar se tem configurações personalizadas |
+| 293 | Logs funcionando     | Verificar se logs estão sendo gerados<br>Comando: `sudo less /var/log/syslog` <br>Deve mostrar atividade do sistema |
 
 ### Categoria: Versionamento (990-versionamento.yml)
 
@@ -272,8 +272,8 @@ molecule verify
 
 ### Categoria: Arquivos Modificados (999-arquivos-modificados.yml)
 
-| ID  | Teste                    | Como testar                                                                                                                       |
-| --- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| ID  | Teste                    | Como testar                                                                                                                            |
+| --- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | 996 | Links simbólicos criados | Verificar links para arquivos modificados<br>Comando: `ls -lh /usr/local/cmc/modificados`<br>Deve conter links para arquivos alterados |
 
 ## Teste Final Integrado
