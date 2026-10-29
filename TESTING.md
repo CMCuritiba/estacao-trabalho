@@ -1,0 +1,182 @@
+# Guia de Testes - Estação de Trabalho CMC
+
+Este documento descreve como executar testes para validar a configuração da estação de trabalho CMC.
+
+## Visão Geral
+
+O processo de testes é dividido em duas partes:
+
+1. **Testes Automatizados** - Executados via **Molecule** (em cima da role **Ansible**) para validação rápida.
+2. **Testes Semiautomatizados** - Executados apenas com a role **Ansible**, seguindo o [Caderno de Testes](./caderno-de-testes.md).
+
+## Pré-requisitos
+
+- ET (Estação de Trabalho) configurada, conforme [documentação oficial da CMC](./README.md)
+- Usuário com privilégios administrativos
+- Caderno de testes impresso (como nos tempos dos sumérios) ou digital
+
+É necessário ter instalado:
+
+- Python 3.x
+- Ansible
+- Vagrant com VirtualBox
+- Molecule (configurado com driver Vagrant)
+
+## Executando Testes Automatizados
+
+### 1. Configuração do Ambiente
+
+Siga a documentação oficial do repositório da CMC para configurar o ambiente de testes com Ansible e/ou Molecule (+Vagrant).
+
+### 2. Executar Todos os Testes
+
+```bash
+# Executar apenas verificação
+molecule verify
+
+# Executar converge + verify (configuração + teste)
+molecule test
+```
+
+### 3. Executar Testes Específicos
+
+```bash
+# Executar apenas para tags específicas
+molecule converge -- --tags "suporte,dns"
+molecule verify
+```
+
+### 4. Interpretar Resultados
+
+- ✅ **VERDE**: Teste passou
+- ❌ **VERMELHO**: Teste falhou - verificar logs para detalhes
+- ⚠️ **AMARELO**: Aviso - pode necessitar atenção
+
+## Executando Testes Semiautomatizados
+
+### 1. Preparação
+
+- Abrir o arquivo [Caderno de Testes](./caderno-de-testes.md)
+- Ter acesso à estação de trabalho
+- Logar com usuário apropriado para cada teste
+
+### 2. Processo de Execução
+
+1. Seguir ordem numérica dos testes conforme task (011-1002)
+2. Executar comandos conforme instruções
+3. Marcar resultado: ✅ (passou) ou ❌ (falhou)
+4. Anote as falhas antes de continuar para investigação futura
+
+### 3. Categorias de Teste
+
+- **Usuários e Grupos** (011-013, 021)
+- **Pacotes** (031-034, 041-042)
+- **Configurações** (051-304)
+- **Versionamento** (991-995)
+- **Teste Integrado Final** (1001-1002)
+
+## Estratégia de Testes
+
+### 1. Testes de Desenvolvimento
+
+Durante o desenvolvimento, execute:
+
+```bash
+# Teste rápido
+molecule converge -- --diff
+molecule verify
+
+# Teste específico
+molecule converge -- --tags "dns"
+```
+
+### 2. Testes de Validação
+
+Antes de deploy em produção:
+
+1. Execute todos os testes automatizados
+2. Execute todos os testes semiautomatizados
+3. Documente falhas
+4. Abra nova(s) issue(s) para sugerir correções
+
+### 3. Testes de Produção
+
+Após instalação em estação nova:
+
+1. Execute testes semiautomatizados críticos (011-034, 900-901)
+2. Execute testes específicos conforme necessidade
+3. Documente status final
+
+## Solução de Problemas
+
+### Testes Automatizados Falhando
+
+1. Verificar se variáveis estão definidas corretamente
+2. Conferir logs detalhados: `molecule verify -v`
+3. Validar se a máquina virtual tem recursos suficientes
+4. Verificar conectividade de rede
+
+### Testes Semiautomatizados Falhando
+
+1. Verificar se usuário tem permissões adequadas
+2. Confirmar se estação foi configurada corretamente
+3. Revisar logs do sistema: `/var/log/syslog`
+4. Verificar status de serviços: `systemctl status <servico>`
+
+## Interpretação de Resultados
+
+### Status Geral
+
+- **100% PASSOU**: Estação pronta para produção
+- **90-99% PASSOU**: Investigar falhas pontuais
+- **<90% PASSOU**: Não implantar, corrigir problemas
+
+### Testes Críticos (não podem falhar)
+
+- 011-013: Criação usuário suporte
+- 141-144: Integração com AD
+- 211-212: SSH funcionando
+- 1001-1002: Teste integrado final
+
+## Relatórios
+
+### Relatório de Testes Automatizados
+
+Os testes automatizados geram relatório automático no terminal.
+
+### Relatório de Testes Semiautomatizados
+
+Preencher no final do [Caderno de Testes](./caderno-de-testes.md):
+
+- Status da Estação: Aprovada/Reprovada
+- Data do Teste
+- Nome do Testador
+- Versão Testada
+
+## Manutenção dos Testes
+
+### Adicionando Novos Testes Automatizados
+
+1. Editar `roles/estacao/molecule/default/verify.yml`
+2. Seguir padrão existente
+3. Testar com `molecule verify`
+
+### Adicionando Novos Testes Manuais
+
+1. Editar [Caderno de Testes](./caderno-de-testes.md)
+2. Seguir formato da tabela existente
+3. Atribuir ID sequencial
+
+### Atualizando Testes Existentes
+
+1. Verificar impacto em outros testes
+2. Atualizar documentação
+3. Testar antes de commit
+
+## Referências
+
+- [Documentação Molecule](https://molecule.readthedocs.io/)
+- [Ansible Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
+- [Guia Vagrant](https://www.vagrantup.com/docs)
+- [README](./README.md) - Configuração geral do projeto
+- [Caderno de testes](./caderno-de-testes.md) - Testes manuais detalhados

@@ -71,7 +71,6 @@ Configure o **seu** computador:
 3. Utilize o arquivo [`all.yml.example`](./inventory/group_vars/all.yml.example)
    como exemplo para criar um novo arquivo de configuração `inventory/group_vars/all.yml`,
    de acordo com o necessário. As variáveis são:
-
    - `estacao_suporte_user`: usuário local para suporte
    - `estacao_suporte_pass`: senha do usuário suporte
    - `estacao_root_pass`: senha do usuário root
@@ -160,7 +159,6 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
    ```
 
 2. Instale o Ansible, Molecule e Vagrant:
-
    1. Instale o [Ansible](#ansible-install);
       1. Para aplicar o ansible nas máquinas de destino, você poderá precisar do
          `sshpass`. Instale-o com:
@@ -173,16 +171,11 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
 
       ```shell
       # Antes de instalar, crie e ative um virtualenv
-      $ cd ~/workspace/
-      $ python3 -m venv molecule
-      $ source ~/workspace/molecule/bin/activate
+      cd ~/workspace/
+      python3 -m venv molecule
+      source ~/workspace/molecule/bin/activate
       # Instale o molecule e os plugins
-      (molecule) $ pip install molecule
-      (molecule) $ pip install "molecule-plugins[vagrant]"
-      # Por alguma razão o molecule se perde ao buscar os módulos instalados:
-      (molecule) $ pip install ansible
-      # Instale as dependências da role:
-      (molecule) $ pip install passlib
+      pip install ansible molecule "molecule-plugins[vagrant]" ansible-lint passlib
       ```
 
    3. <a name="vagrant-install"></a>Instale o Vagrant de acordo com a
@@ -193,13 +186,11 @@ Antes de começar, certifique-se de que seu computador atende aos requisitos nec
       _source list_ do vagrant a ser criado. O comando `lsb_release -cs` retorna
       a versão do Mint e não irá funcionar para a instalação do vagrant. A
       versão base do seu Mint pode ser verificada nos arquivos:
-
       - `/etc/apt/sources.list.d/official-package-repositories.list`
       - `/etc/upstream-release/lsb-release`
 
 3. Opcionalmente, ative o [commitlint](https://github.com/conventional-changelog/commitlint) e
    o [commitzen](https://github.com/commitizen/cz-cli) no repositório:
-
    1. Instale [`npm e node`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm);
    2. Na pasta do repositório, rode:
 
