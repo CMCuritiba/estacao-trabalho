@@ -2,39 +2,25 @@
 
 Este documento descreve como executar testes para validar a configuração da estação de trabalho CMC.
 
-## Esclarecimento
-
-> Este guia foi feito (e revisado por mim) com o agente de IA GitHub Copilot, e pode conter erros. Favor revisar novamente antes de usar.
-
 ## Visão Geral
 
-> O processo de testes é dividido em duas partes:
+O processo de testes é dividido em duas partes:
 
 1. **Testes Automatizados** - Executados via **Molecule** (em cima da role **Ansible**) para validação rápida.
-2. **Testes Semiautomatizados** - Executados apenas com a role **Ansible**, seguindo o caderno de testes (`caderno-de-testes.md`).
+2. **Testes Semiautomatizados** - Executados apenas com a role **Ansible**, seguindo o [Caderno de Testes](./caderno-de-testes.md).
 
 ## Pré-requisitos
 
-- ET (Estação de Trabalho) configurada, conforme [documentação oficial da CMC](https://github.com/CMCuritiba/Estacao-Trabalho-CMC)
+- ET (Estação de Trabalho) configurada, conforme [documentação oficial da CMC](./README.md)
 - Usuário com privilégios administrativos
 - Caderno de testes impresso (como nos tempos dos sumérios) ou digital
 
-### Para Testes Automatizados (1)
+É necessário ter instalado:
 
-Em ordem de precedência, é necessário ter instalado:
 - Python 3.x
 - Ansible
-- Vagrant com VM provider / Hypervisor (VirtualBox, nesse caso)
+- Vagrant com VirtualBox
 - Molecule (configurado com driver Vagrant)
-
-### Para Testes Semiautomatizados (2)
-
-Em ordem de precedência, é necessário ter instalado:
-- Python 3.x
-- Ansible
-
-Opcionalmente:
-- Vagrant com VM provider / Hypervisor (VirtualBox, nesse caso)
 
 ## Executando Testes Automatizados
 
@@ -43,6 +29,7 @@ Opcionalmente:
 Siga a documentação oficial do repositório da CMC para configurar o ambiente de testes com Ansible e/ou Molecule (+Vagrant).
 
 ### 2. Executar Todos os Testes
+
 ```bash
 # Executar apenas verificação
 molecule verify
@@ -52,6 +39,7 @@ molecule test
 ```
 
 ### 3. Executar Testes Específicos
+
 ```bash
 # Executar apenas para tags específicas
 molecule converge -- --tags "suporte,dns"
@@ -59,6 +47,7 @@ molecule verify
 ```
 
 ### 4. Interpretar Resultados
+
 - ✅ **VERDE**: Teste passou
 - ❌ **VERMELHO**: Teste falhou - verificar logs para detalhes
 - ⚠️ **AMARELO**: Aviso - pode necessitar atenção
@@ -66,17 +55,20 @@ molecule verify
 ## Executando Testes Semiautomatizados
 
 ### 1. Preparação
-- Abrir o arquivo `caderno-de-testes.md`
+
+- Abrir o arquivo [Caderno de Testes](./caderno-de-testes.md)
 - Ter acesso à estação de trabalho
 - Logar com usuário apropriado para cada teste
 
 ### 2. Processo de Execução
+
 1. Seguir ordem numérica dos testes conforme task (011-1002)
 2. Executar comandos conforme instruções
 3. Marcar resultado: ✅ (passou) ou ❌ (falhou)
-4. Investigar falhas antes de continuar
+4. Anote as falhas antes de continuar para investigação futura
 
 ### 3. Categorias de Teste
+
 - **Usuários e Grupos** (011-013, 021)
 - **Pacotes** (031-034, 041-042)
 - **Configurações** (051-304)
@@ -86,7 +78,9 @@ molecule verify
 ## Estratégia de Testes
 
 ### 1. Testes de Desenvolvimento
+
 Durante o desenvolvimento, execute:
+
 ```bash
 # Teste rápido
 molecule converge -- --diff
@@ -97,13 +91,18 @@ molecule converge -- --tags "dns"
 ```
 
 ### 2. Testes de Validação
+
 Antes de deploy em produção:
+
 1. Execute todos os testes automatizados
 2. Execute todos os testes semiautomatizados
-3. Documente falhas e correções
+3. Documente falhas
+4. Abra nova(s) issue(s) para sugerir correções
 
 ### 3. Testes de Produção
+
 Após instalação em estação nova:
+
 1. Execute testes semiautomatizados críticos (011-034, 900-901)
 2. Execute testes específicos conforme necessidade
 3. Documente status final
@@ -111,12 +110,14 @@ Após instalação em estação nova:
 ## Solução de Problemas
 
 ### Testes Automatizados Falhando
+
 1. Verificar se variáveis estão definidas corretamente
 2. Conferir logs detalhados: `molecule verify -v`
 3. Validar se a máquina virtual tem recursos suficientes
 4. Verificar conectividade de rede
 
 ### Testes Semiautomatizados Falhando
+
 1. Verificar se usuário tem permissões adequadas
 2. Confirmar se estação foi configurada corretamente
 3. Revisar logs do sistema: `/var/log/syslog`
@@ -125,28 +126,28 @@ Após instalação em estação nova:
 ## Interpretação de Resultados
 
 ### Status Geral
+
 - **100% PASSOU**: Estação pronta para produção
 - **90-99% PASSOU**: Investigar falhas pontuais
 - **<90% PASSOU**: Não implantar, corrigir problemas
 
 ### Testes Críticos (não podem falhar)
+
 - 011-013: Criação usuário suporte
 - 141-144: Integração com AD
 - 211-212: SSH funcionando
 - 1001-1002: Teste integrado final
 
-### Testes Opcionais (podem ser ignorados)
-- Testes relacionados a hardware específico
-- Funcionalidades não utilizadas na organização
-- Configurações específicas de ambiente
-
 ## Relatórios
 
 ### Relatório de Testes Automatizados
+
 Os testes automatizados geram relatório automático no terminal.
 
 ### Relatório de Testes Semiautomatizados
-Preencher no final do `caderno-de-testes.md`:
+
+Preencher no final do [Caderno de Testes](./caderno-de-testes.md):
+
 - Status da Estação: Aprovada/Reprovada
 - Data do Teste
 - Nome do Testador
@@ -155,16 +156,19 @@ Preencher no final do `caderno-de-testes.md`:
 ## Manutenção dos Testes
 
 ### Adicionando Novos Testes Automatizados
+
 1. Editar `roles/estacao/molecule/default/verify.yml`
 2. Seguir padrão existente
 3. Testar com `molecule verify`
 
 ### Adicionando Novos Testes Manuais
-1. Editar `caderno-de-testes.md`
+
+1. Editar [Caderno de Testes](./caderno-de-testes.md)
 2. Seguir formato da tabela existente
 3. Atribuir ID sequencial
 
 ### Atualizando Testes Existentes
+
 1. Verificar impacto em outros testes
 2. Atualizar documentação
 3. Testar antes de commit
@@ -174,5 +178,5 @@ Preencher no final do `caderno-de-testes.md`:
 - [Documentação Molecule](https://molecule.readthedocs.io/)
 - [Ansible Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
 - [Guia Vagrant](https://www.vagrantup.com/docs)
-- `README.md` - Configuração geral do projeto
-- `caderno-de-testes.md` - Testes manuais detalhados
+- [README](./README.md) - Configuração geral do projeto
+- [Caderno de testes](./caderno-de-testes.md) - Testes manuais detalhados
